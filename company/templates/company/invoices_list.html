@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <h1>Invoices</h1>
+  <a href="{% url 'invoice_add' %}" class="btn btn-primary">Add Invoice</a>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Invoice ID</th>
+        <th>Status</th>
+        <th>Date</th>
+        <th>Due Date</th>
+        <th>Total Price</th>
+        <th>Client</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for invoice in invoices %}
+      <tr>
+        <td>{{ invoice.id }}</td>
+        <td>{{ invoice.status }}</td>
+        <td>{{ invoice.date }}</td>
+        <td>{{ invoice.due_date }}</td>
+        <td>{{ invoice.currency}}{{ invoice.total_price }}</td>
+        <td>{{ invoice.Client.name }}</td>
+        <td>
+          <a href="{% url 'view-document-invoice' invoice.id %}"><button class="btn btn-success text-white"></button></a>
+          <a href="{% url 'invoice-template' invoice.id %}"><button class="btn btn-info text-white"> VIEW CLIENT INVOICE </button></a>
+          <a href="{% url 'invoice_edit' invoice.id %}" class="btn btn-secondary btn-sm">Edit</a>
+          <a href="{% url 'invoice_delete' invoice.id %}" class="btn btn-danger btn-sm">Delete</a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="7">No invoices yet.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+
+  </table>
+   <div class="p-5 center">
+          <img class=img-fluid  src="{% static 'invo_list.jfif' %}" alt="Skolo Online Learning">
+   </div>
+<style>
+  .center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+</style>
+{% endblock %}

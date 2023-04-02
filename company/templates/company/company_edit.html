@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Edit Company</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+      <div class="btn-group me-2">
+        <a href="{% url 'company' %}" class="btn btn-secondary">Cancel</a>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="container">
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="card">
+        <div class="card-body">
+
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="companyName">Company Name</label>
+                <input type="text" class="form-control" id="companyName" name="companyName" value="{{company.companyName}}" required>
+              </div>
+              <div class="form-group">
+                <label for="address">Address</label>
+                <input type="text" class="form-control" id="address" name="address" value="{{company.address}}" required>
+              </div>
+              <div class="form-group">
+                <label for="website">Website</label>
+                <input type="text" class="form-control" id="website" name="website" value="{{company.website}}" required>
+              </div>
+              <div class="form-group">
+                <label for="postalCode">Postal Code</label>
+                <input type="text" class="form-control" id="postalCode" name="postalCode" value="{{company.postalCode}}" required>
+              </div>
+              <div class="form-group">
+                <label for="phoneNumber">Phone Number</label>
+                <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" value="{{company.phoneNumber}}" required>
+              </div>
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" name="email" value="{{company.email}}" required>
+              </div>
+              <div class="form-group">
+                <label for="taxID">Tax Number</label>
+                <input type="text" class="form-control" id="taxID" name="taxID" value="{{company.taxID}}" required>
+              </div>
+            </div>
+
+
+            <div class="col-lg-5">
+              <div class="form-group">
+                <label for="companyLogo">Company Logo</label>
+                <input type="file" class="form-control-file" id="companyLogo" name="companyLogo">
+              </div>
+              {% if company.companyLogo %}
+              <div class="p-5">
+                <img class="img-fluid" src="{{ company.companyLogo.url }}" alt="{{ company.companyName }} Logo">
+              </div>
+              {% endif %}
+            </div>
+          </div>
+
+        </div>
+        <div class="card-footer">
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+
+{% endblock %}

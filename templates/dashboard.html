@@ -1,0 +1,339 @@
+<!--{% extends 'dash.html' %}-->
+
+<!--{% block content %}-->
+<!--    <div class="row">-->
+<!--        <div class="col-md-6 col-lg-3">-->
+<!--            <div class="card border-primary mb-3">-->
+<!--                <div class="card-body">-->
+<!--                    <h5 class="card-title">Number of Clients</h5>-->
+<!--                    <p class="card-text">{{ num_clients }}</p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        <div class="col-md-6 col-lg-3">-->
+<!--            <div class="card border-secondary mb-3">-->
+<!--                <div class="card-body">-->
+<!--                    <h5 class="card-title">Number of Unpaid Invoices</h5>-->
+<!--                    <p class="card-text">{{ num_unpaid_invoices }}</p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        <div class="col-md-6 col-lg-3">-->
+<!--            <div class="card border-success mb-3">-->
+<!--                <div class="card-body">-->
+<!--                    <h5 class="card-title">Total Revenue</h5>-->
+<!--                    <p class="card-text">{{ total_revenue }}</p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--        <div class="col-md-6 col-lg-3">-->
+<!--            <div class="card border-danger mb-3">-->
+<!--                <div class="card-body">-->
+<!--                    <h5 class="card-title">Most Sold Product</h5>-->
+<!--                    <p class="card-text">{{ most_sold_product }}</p>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--{% endblock %}-->
+
+
+
+
+
+
+
+
+{% extends 'base.html' %}
+{% load static %}
+{% block css %}
+<link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Create an Invoice</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+      <div class="btn-group me-2">
+        <a href="{% url 'invoices_list' %}"><button type="button" class="btn btn-primary">Go Back</button></a>
+      </div>
+    </div>
+  </div>
+    <div class="container-fluid">
+    <div class="card">
+      <div class="card-header">
+        Skolo Online Invoice Generator
+      </div>
+
+      <div class="card-body">
+
+        <div class="row">
+          <div class="col-lg-12">
+            <h5 class="card-title">Add Products to your invoice
+              <button href="#addProductModal" type="button" class="btn btn-link" data-bs-toggle="modal"> ADD PRODUCT </button>
+            </h5>
+
+            {% if products|length > 0 %}
+            <div class="table-responsive">
+              <table class="table table-striped table-sm">
+                <thead>
+                  <tr>
+
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+
+
+                  </tr>
+                </thead>
+                <tbody>
+
+                  {% for product in products %}
+                <tr>
+                  <td>{{product.title}}</td>
+                  <td>{{product.description}}</td>
+                  <td>{{product.quantity}}</td>
+                  <td>{{product.currency}} {{product.price}}</td>
+
+                </tr>
+                  {% endfor %}
+
+                </tbody>
+              </table>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <br>
+
+
+        <div class="row">
+          <div class="col-lg-6">
+
+            <form class="" action="#" method="post">
+
+              {% csrf_token %}
+              {{ inv_form }}
+
+            </form>
+
+          </div>
+          <div class="col-lg-6">
+            <h5 class="card-title"> Select Client to Add </h5>
+            <br>
+            <h5 class="card-title"> Current Client: <span class="badge bg-success">{{invoice.Client.name}}</span> </h5>
+            <br>
+
+            <div class="mb-5">
+              <form class="" action="#" method="post">
+                {% csrf_token %}
+
+                {{client_form}}
+
+                <button type="submit" class="btn btn-primary">ADD CLIENT</button>
+              </form>
+            </div>
+
+            <div class="row">
+              <div class="col-lg-4">
+                <a href="{% url 'invoices_list' %}"><button class="btn btn-info text-white"> VIEW CLIENT INVOICE </button></a>
+              </div>
+              <div class="col-lg-4">
+                <a href="{% url 'invoices_list' %}"><button class="btn btn-success text-white"> VIEW PDF INVOICE </button></a>
+              </div>
+              <div class="col-lg-4">
+                <a href="{% url 'invoices_list'  %}"><button class="btn btn-warning text-white"> EMAIL CLIENT INVOICE </button></a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- MODALS MODALS -->
+    <!-- Modals Start Here -->
+    <div class="modal modal-sheet py-5" tabindex="-1" id="addProductModal">
+    <div class="modal-dialog">
+      <div class="modal-content rounded-6 shadow">
+
+        <form class="" action="#" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+
+
+        <div class="modal-header border-bottom-0">
+          <h5 class="modal-title">Add Invoice Product</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body py-0">
+          {{prod_form.as_p}}
+
+        </div>
+        <div class="modal-footer flex-column border-top-0">
+          <button type="submit" class="btn btn-lg btn-primary w-100 mx-0 mb-2">Save changes</button>
+        </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>{{ company.companyName }} Invoice</title>
+
+    <style>
+
+      /* Invoice styling */
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 14px;
+        color: #333;
+        background-color: #fff;
+        margin: 0;
+        padding: 0;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      }
+
+      h1 {
+        font-size: 32px;
+        margin-top: 0;
+      }
+
+      hr {
+        border: none;
+        border-top: 2px solid #ccc;
+        margin-top: 20px;
+        margin-bottom: 20px;
+      }
+
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        margin-bottom: 20px;
+      }
+
+      th {
+        font-weight: bold;
+        text-align: left;
+        background-color: #eee;
+        border: 1px solid #ccc;
+        padding: 8px;
+      }
+
+      td {
+        border: 1px solid #ccc;
+        padding: 8px;
+      }
+
+      /* Product table styling */
+      .product-table td:first-child {
+        width: 70%;
+      }
+
+      .product-table td:nth-child(2),
+      .product-table td:nth-child(3) {
+        text-align: right;
+        width: 15%;
+      }
+
+      .product-table th:first-child {
+        width: 70%;
+      }
+
+      .product-table th:nth-child(2),
+      .product-table th:nth-child(3) {
+        text-align: right;
+        width: 15%;
+      }
+
+      .product-table tfoot td {
+        font-weight: bold;
+      }
+
+    </style>
+  </head>
+
+  <body>
+
+    <div class="container">
+      <h1>{{company.companyName}} Invoice</h1>
+      <hr>
+
+      <table>
+        <tbody>
+          <tr>
+            <td><img  src="{{ company.companyLogo.url }}" alt="{{ company.companyName }} Logo" style="width: 40%; max-width:40px" /></td>
+
+            <td>
+              <strong>{{company.companyName}}</strong><br>
+              {{company.address}}<br>
+              {{company.website}}, {{company.postalCode}}<br>
+              {{company.email}}<br>
+              {{company.phoneNumber}}
+              <br><br>
+              Tax Number: {{invoice.taxID}}
+            </td>
+            <td>
+              Invoice #: <strong>{{invoice.id}}</strong><br>
+              Created: {{invoice.date|date}}<br>
+              Due: {{invoice.due_date}}
+              <br><br>
+              <strong>{{invoice.Client.name}}</strong><br>
+              {{invoice.Client.address}}<br>
+              {{invoice.Client.phoneNumber}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Invoice Items</h2>
+
+      <table class="product-table">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for product in products %}
+          <tr>
+            <td>{{product.title}}</td>
+<td>{{product.quantity}}</td>
+<td>{{product.currency}} {{product.price}}</td>
+</tr>
+{% endfor %}
+<tr class="total-row">
+<td></td>
+<td></td>
+<td><strong>Total: {{invoiceTotal}}</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+<br>
+<br>
+<p>{{invoice.status}}</p>
+
+  </div>
+</body>
+</html>

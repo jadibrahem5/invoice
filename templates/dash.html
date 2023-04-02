@@ -1,0 +1,90 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/dash.css' %}">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
+<div id="viewport">
+  <!-- Sidebar -->
+  <div id="sidebar">
+    <header>
+      <a href="#">INVOICE SYSTEM</a>
+    </header>
+    <ul class="nav">
+      <li>
+        <a href="{% url 'dashboard' %}">
+          <i class="zmdi zmdi-view-dashboard"></i> Dashboard
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'invoices_list' %}">
+          <i class="zmdi zmdi-link"></i> Invoices
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'products_list' %}">
+          <i class="zmdi zmdi-widgets"></i> Products
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'clients_list' %}">
+          <i class="zmdi zmdi-calendar"></i> Cilents
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'company' %}">
+          <i class="zmdi zmdi-info-outline"></i> Profile
+        </a>
+      </li>
+      <li>
+        <a href="#">
+          <i class="zmdi zmdi-settings"></i> Contact
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'logout'%}">
+          <i class="zmdi zmdi-comment-more"></i> logout
+        </a>
+      </li>
+    </ul>
+    <div class="sidebar-footer">
+      <img src="{% static 'logo.png' %}" alt="Logo" width="150" height="150">
+      <p>Powered by Upstairs</p>
+    </div>
+  </div>
+  <!-- Content -->
+  <div id="content">
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <ul class="nav navbar-nav navbar-right">
+          <li>
+            <a href="#"><i class="zmdi zmdi-notifications text-danger"></i>
+            </a>
+          </li>
+          <li><a href="#">{{ user }}</a></li>
+        </ul>
+      </div>
+    </nav>
+    <div class="container-fluid">
+      <h1>Welcome {{user}}</h1>
+      {% block content %}
+
+      {% endblock %}
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

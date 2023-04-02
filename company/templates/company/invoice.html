@@ -1,0 +1,169 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+<html>
+<head>
+	<title>Invoice</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			font-size: 12px;
+		}
+
+		.invoice {
+			padding: 10px;
+			margin: 0 auto;
+			max-width: 800px;
+			background-color: #fff;
+			box-shadow: 0 0 10px rgba(0,0,0,0.1);
+		}
+
+		.invoice-header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin-bottom: 20px;
+		}
+
+		.invoice-header img {
+			max-width: 200px;
+			max-height: 100px;
+		}
+
+		.invoice-header h1 {
+			font-size: 24px;
+			margin: 0;
+		}
+
+		.invoice-header p {
+			margin: 0;
+			font-size: 14px;
+		}
+
+		.invoice-client-info {
+			margin-bottom: 20px;
+			padding-bottom: 20px;
+			border-bottom: 1px solid #ccc;
+		}
+
+		.invoice-client-info h2 {
+			font-size: 18px;
+			margin: 0 0 10px 0;
+		}
+
+		.invoice-client-info p {
+			margin: 0;
+			font-size: 14px;
+		}
+
+		.invoice-details {
+			margin-bottom: 20px;
+			padding-bottom: 20px;
+			border-bottom: 1px solid #ccc;
+		}
+
+		.invoice-details h2 {
+			font-size: 18px;
+			margin: 0 0 10px 0;
+		}
+
+		.invoice-details p {
+			margin: 0;
+			font-size: 14px;
+		}
+
+		.invoice-products {
+			margin-bottom: 20px;
+		}
+
+		.invoice-products table {
+			width: 100%;
+			border-collapse: collapse;
+			font-size: 14px;
+		}
+
+		.invoice-products th {
+			background-color: #eee;
+			padding: 10px;
+			text-align: left;
+		}
+
+		.invoice-products td {
+			padding: 10px;
+			border-bottom: 1px solid #ccc;
+		}
+
+		.invoice-products td.quantity {
+			text-align: center;
+		}
+
+		.invoice-products td.price {
+			text-align: right;
+		}
+
+		.invoice-products td.total {
+			font-weight: bold;
+			text-align: right;
+		}
+
+		.invoice-total {
+			margin-top: 20px;
+			text-align: right;
+		}
+
+		.invoice-total p {
+			margin: 0;
+			font-size: 16px;
+			font-weight: bold;
+		}
+	</style>
+</head>
+<body>
+	<div class="header">
+		<img src="{{ company.companyLogo.url }}" alt="{{ company.companyName }} Logo">
+		<h1>{{ company_name }}</h1>
+		<p>{{ company_address }}</p>
+	</div>
+	<div class="client-info">
+		<h2>Client Information</h2>
+		<p>Name: {{ client_name }}</p>
+		<p>Address: {{ client_address }}</p>
+		<p>Phone: {{ client_phone }}</p>
+	</div>
+	<div class="invoice-info">
+		<h2>Invoice Information</h2>
+		<p>Date: {{ invoice_date }}</p>
+		<p>Due Date: {{ invoice_due_date }}</p>
+		<p>Status: {{ invoice_status }}</p>
+	</div>
+	<div class="products">
+		<h2>Products</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>Title</th>
+					<th>Description</th>
+					<th>Quantity</th>
+					<th>Price</th>
+					<th>Currency</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for product in products %}
+				<tr>
+					<td>{{ product.title }}</td>
+					<td>{{ product.description }}</td>
+					<td>{{ product.quantity }}</td>
+					<td>{{ product.price }}</td>
+					<td>{{ product.currency }}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	<div class="total">
+		<h2>Total: {{ total_price }}</h2>
+	</div>
+</body>
+</html>
+{% endblock %}

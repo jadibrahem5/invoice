@@ -1,0 +1,11 @@
+{% extends 'dash.html'%}
+{% include 'dash.html'%}
+{% block content %}
+  <h1>Delete Invoice</h1>
+  <p>Are you sure you want to delete invoice #{{ invoice.id }}?</p>
+  <form method="POST">
+    {% csrf_token %}
+    <button type="submit">Yes, delete it</button>
+    <a href="{% url 'invoice_edit' invoice_id=invoice.id %}">No, go back</a>
+  </form>
+{% endblock %}

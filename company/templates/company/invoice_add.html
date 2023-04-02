@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Add Invoice</h1>
+  <form method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+      <div class="form-group">
+        <label>Status:</label>
+        <select name="status" class="form-control">
+          {% for choice in STATUS %}
+          <option value="{{ choice.0 }}">{{ choice.1 }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Date:</label>
+        <input type="date" name="date" class="form-control" value="{{ form.date.value }}">
+      </div>
+      <div class="form-group">
+        <label>Due Date:</label>
+        <input type="date" name="due_date" class="form-control" value="{{ form.due_date.value }}">
+      </div>
+      <div class="form-group">
+        <label>Total Price:</label>
+        <input type="number" name="total_price" id="total_price" class="form-control" readonly>
+      </div>
+      <div class="form-group">
+        <label>Client:</label>
+        <select name="client" class="form-control">
+          {% for client in clients %}
+          <option value="{{ client.id }}">{{ client.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+        <div class="form-group">
+              <label for="currency" class="form-label">Currency:</label>
+              <select name="currency" class="form-select">
+                <option value="I">IQD</option>
+                <option value="$">USD</option>
+              </select>
+            </div>
+      <div class="form-group">
+        <label>Products:</label>
+        <table id="productsTable" class="table table-striped">
+          <thead>
+            <tr>
+              <th>Select</th>
+              <th>Title</th>
+              <th>currency</th>
+              <th>Price</th>
+              <th>Quantity</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for product in products %}
+            <tr>
+              <td><input type="checkbox" name="products[]" value="{{ product.id }}"></td>
+              <td>{{ product.title }}</td>
+              <td>{{ product.currency }}</td>
+              <td> {{ product.price }}</td>
+              <td><input type="number" name="quantities[]" value="0" class="form-control" id="quantity-{{ product.id }}"></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <button type="submit" class="btn btn-primary">Add</button>
+    </div>
+  </form>
+
+  <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="addProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <form id="addProductForm" method="POST">
+          {% csrf_token %}
+          <div class="modal-header">
+            <h5 class="modal-title" id="addProductModalLabel">Add Product</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label>Title:</label>
+              <input type="text" name="title" class="form-control">
+            </div>
+            <div class="form-group">
+              <label>Price:</label>
+              <input type="number" name="price" class="form-control">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    </div>
+  <script>
+    // Get the products quantity input fields and the total price input field
+  const productsQuantityInputs = document.querySelectorAll('input[name^="quantities[]"]');
+const totalPriceInput = document.getElementById('total_price');
+
+// Update the total price whenever the user changes a product quantity
+const updateTotalPrice = () => {
+  let totalPrice = 0;
+  for (const input of productsQuantityInputs) {
+    const quantity = parseInt(input.value);
+    const price = parseFloat(input.parentNode.previousElementSibling.textContent);
+    totalPrice += quantity * price;
+  }
+  totalPriceInput.value = totalPrice.toFixed(2);
+};
+
+// Initialize the total price
+updateTotalPrice();
+
+// Add an event listener to each products quantity input field
+for (const input of productsQuantityInputs) {
+  input.addEventListener('input', updateTotalPrice);
+}
+  </script>
+{% endblock %}

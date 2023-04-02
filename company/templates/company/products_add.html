@@ -1,0 +1,38 @@
+{% extends 'base.html'%}
+{% block content %}
+  <h1>Add Product</h1>
+    <form method="post" class="row g-3">
+            {% csrf_token %}
+            <div class="col-md-6">
+              <label for="title" class="form-label">Title:</label>
+              <input type="text" name="title" class="form-control" required>
+            </div>
+
+            <div class="col-md-6">
+              <label for="quantity" class="form-label">Quantity:</label>
+              <input type="number" name="quantity" class="form-control" required>
+            </div>
+
+            <div class="col-md-12">
+              <label for="description" class="form-label">Description:</label>
+              <textarea name="description" class="form-control"></textarea>
+            </div>
+
+            <div class="col-md-6">
+              <label for="price" class="form-label">Price:</label>
+              <input type="number" name="price" step="0.01" class="form-control" required>
+            </div>
+
+            <div class="col-md-6">
+              <label for="currency" class="form-label">Currency:</label>
+              <select name="currency" class="form-select">
+                <option value="I">IQD</option>
+                <option value="$">USD</option>
+              </select>
+            </div>
+
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+    </form>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'base.html'%}
+{% load static %}
+
+
+
+{% block css %}
+<link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+  <h1>My Products</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Currency</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for product in products %}
+        <tr>
+          <td>{{ product.title }}</td>
+          <td>{{ product.description }}</td>
+          <td>{{ product.quantity }}</td>
+          <td>{{ product.price }}</td>
+          <td>{{ product.currency }}</td>
+          <td>
+            <a href="{% url 'products_edit' product.id %}">Edit</a>
+          </td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="6">No products found.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <div class="p-5 center">
+          <img class=img-fluid  src="{% static 'invo_list.jfif' %}" alt="Skolo Online Learning">
+   </div>
+<style>
+  .center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+</style>
+{% endblock %}

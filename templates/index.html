@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Dashboard</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+      <div class="btn-group me-2">
+
+      </div>
+    </div>
+  </div>
+
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card mb-5">
+                    <h5 class="card-header">
+                      <img src="{% static 'ivon.jfif' %}" alt="Invoices Icon" width="80" height="60" class="mr-2">
+                      Invoices
+                    </h5>
+                    <div class="card-body">
+                      <h5 class="card-title">Total Number of Invoices: {{num_invoices}}</h5>
+                      <h5 class="card-title">UNPaid Invoices: {{num_unpaid_invoices}}</h5>
+                      <a href="{% url 'invoices_list' %}" class="btn btn-primary btn-lg">View Invoices</a>
+                    </div>
+                  </div>
+                <div class="card mb-5">
+                  <h5 class="card-header">
+                    <img src="{% static 'clin.png' %}" alt="Clients Icon" width="60" height="60" class="mr-2">
+                    Clients
+                  </h5>
+                  <div class="card-body">
+                    <h5 class="card-title">Total Number of Clients: {{num_clients}}</h5>
+                    <a href="{% url 'clients_list' %}" class="btn btn-primary btn-lg">View Clients</a>
+                  </div>
+                </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="p-5">
+          <img class=img-fluid  src="{% static 'assets/img/empty.svg' %}" alt="Skolo Online Learning">
+        </div>
+        <div class="card border-left-success shadow h-30">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-blue text-uppercase mb-1">
+                                            TOTAL Revenue</div>
+                                            <div class="h3 mb-0 font-weight-bold text-blue-800">${{total_revenue}}</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-dollar-sign fa-2x text-blue-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+        </div>
+      </div>
+      </div>
+    </div>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="card mb-5">
+      <h5 class="card-header">Recent Invoices for your Company</h5>
+      <div class="card-body">
+        <div class="container mt-3">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th scope="col">Invoice</th>
+                <th scope="col">Client</th>
+                <th scope="col">Status</th>
+                <th scope="col">due date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for invoice in recent_invoices %}
+              <tr>
+                <th scope="row">{{ forloop.counter }}</th>
+                <td>{{invoice.Client.name }}</td>
+                <td>{{ invoice.status }}</td>
+                <td>{{ invoice.due_date }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card mb-5">
+      <h5 class="card-header">Top 5 Most Paying Clients</h5>
+      <div class="card-body">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Client Name</th>
+              <th scope="col">Number of invoices</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for client in most_paying_clients %}
+            <tr>
+              <th scope="row">{{ forloop.counter }}</th>
+              <td>{{ client.name }}</td>
+              <td>{{ client.num_invoices }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="3">No clients found.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+  .table-bordered {
+    border: 2px solid #007bff;
+  }
+
+  .table th,
+  .table td {
+    border: 1px solid #007bff;
+  }
+
+  .table thead th {
+    background-color: #007bff;
+    color: white;
+  }
+
+  .table-hover tbody tr:hover {
+    background-color: #f5f5f5;
+  }
+
+  .table {
+  max-width: 500px; /* adjust the value as needed */
+}
+</style>
+
+
+
+{% endblock %}

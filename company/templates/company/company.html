@@ -1,0 +1,52 @@
+{% extends 'base.html'%}
+{% block content %}
+{% load static %}
+
+
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Company Details</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+      <div class="btn-group me-2">
+
+      </div>
+    </div>
+  </div>
+
+
+  <div class="container">
+    <div class="card">
+      <div class="card-body">
+
+        <div class="row">
+          <div class="col-lg-6">
+            <h5 class="card-title">Company Name: {{company.companyName}}</h5>
+            <hr>
+            <p class="card-text"><strong>Address:</strong> {{company.address}}</p>
+            <p class="card-text"><strong>Website:</strong> {{company.website}}</p>
+            <p class="card-text"><strong>Postal Code:</strong> {{company.postalCode}}</p>
+            <br>
+            <p class="card-text"><strong>Phone Number:</strong> {{company.phoneNumber}}</p>
+            <p class="card-text"><strong>Email:</strong> {{company.email}}</p>
+            <br>
+            <p class="card-text"><strong>Tax Number:</strong> {{company.taxID}}</p>
+          </div>
+
+
+          <div class="col-lg-5">
+            <div class="p-5">
+           {% if company.companyLogo %}
+              <img class=img-fluid src="{{ company.companyLogo.url }}" alt="{{ company.companyName }} Logo">
+            {% endif %}
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+     <div class="col-lg-4">
+                <a href="{% url 'company_edit'  %}"><button class="btn btn-info text-white"> Edit your compnay information </button></a>
+     </div>
+  </div>
+
+
+{% endblock %}

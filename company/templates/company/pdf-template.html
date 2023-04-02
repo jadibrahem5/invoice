@@ -1,0 +1,152 @@
+
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>{{ company.companyName }} Invoice</title>
+
+    <style>
+
+      /* Invoice styling */
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 14px;
+        color: #333;
+        background-color: #fff;
+        margin: 0;
+        padding: 0;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      }
+
+      h1 {
+        font-size: 32px;
+        margin-top: 0;
+      }
+
+      hr {
+        border: none;
+        border-top: 2px solid #ccc;
+        margin-top: 20px;
+        margin-bottom: 20px;
+      }
+
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        margin-bottom: 20px;
+      }
+
+      th {
+        font-weight: bold;
+        text-align: left;
+        background-color: #eee;
+        border: 1px solid #ccc;
+        padding: 8px;
+      }
+
+      td {
+        border: 1px solid #ccc;
+        padding: 8px;
+      }
+
+      /* Product table styling */
+      .product-table td:first-child {
+        width: 70%;
+      }
+
+      .product-table td:nth-child(2),
+      .product-table td:nth-child(3) {
+        text-align: right;
+        width: 15%;
+      }
+
+      .product-table th:first-child {
+        width: 70%;
+      }
+
+      .product-table th:nth-child(2),
+      .product-table th:nth-child(3) {
+        text-align: right;
+        width: 15%;
+      }
+
+      .product-table tfoot td {
+        font-weight: bold;
+      }
+
+    </style>
+  </head>
+
+  <body>
+
+    <div class="container">
+      <h1>{{company.companyName}} Invoice</h1>
+      <hr>
+
+      <table>
+        <tbody>
+          <tr>
+            <td><img  src="{{ company.companyLogo.url }}" alt="{{ company.companyName }} Logo" style="width: 40%; max-width:40px" /></td>
+
+            <td>
+              <strong>{{company.companyName}}</strong><br>
+              {{company.address}}<br>
+              {{company.website}}, {{company.postalCode}}<br>
+              {{company.email}}<br>
+              {{company.phoneNumber}}
+              <br><br>
+              Tax Number: {{company.taxID}}
+            </td>
+            <td>
+              Invoice #: <strong>{{invoice.id}}</strong><br>
+              Created: {{invoice.date|date}}<br>
+              Due: {{invoice.due_date}}
+              <br><br>
+              <strong>{{invoice.Client.name}}</strong><br>
+              {{invoice.Client.address}}<br>
+              {{invoice.Client.phoneNumber}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Invoice Items</h2>
+
+      <table class="product-table">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for product in products %}
+          <tr>
+            <td>{{product.title}}</td>
+<td>{{product.quantity}}</td>
+<td>{{product.currency}} {{product.price}}</td>
+</tr>
+{% endfor %}
+<tr class="total-row">
+<td></td>
+<td></td>
+<td><strong>Total: {{invoiceTotal}}</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+<br>
+<br>
+<p>{{invoice.status}}</p>
+
+  </div>
+</body>
+</html>
